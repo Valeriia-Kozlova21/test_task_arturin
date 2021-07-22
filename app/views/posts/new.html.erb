@@ -1,0 +1,36 @@
+<div class="post-create-page">
+  <%= form_for form, url: posts_path, method: :post do |f| -%>
+    <div class="form-control">
+      <label>Title</label>
+      <%= f.text_field :title, name: "post[title]" %>
+    </div>
+
+    <div class="form-control">
+      <label>Post</label>
+      <%= f.text_field :post, name: "post[post]" %>
+    </div>
+
+    <div class="form-control">
+      <label>Social networks</label>
+      <%= f.select :social_networks, options_for_select(SocialPost.social_networks, form.social_networks), {}, multiple: true, name: "post[social_networks][]" %>
+    </div>
+
+    <div class="form-control">
+      <label>Schedule date</label>
+      <%= f.text_field :schedule_time, type: 'date', class: 'datepicker', name: "post[schedule_time]" %>
+    </div>
+
+    <div class="form-control">
+      <%= f.submit 'Create' %>
+    </div>
+  <% end -%>
+  <br/>
+  <br/>
+  <%= link_to 'All posts', posts_path %>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('select').select2();
+  });
+</script>

@@ -1,0 +1,45 @@
+<div class="post-page">
+  <h3>Filters: </h3>
+  <%= form_tag(posts_path, method: :get) do -%>
+    <div class="form-control">
+      Search by title or post: <%= text_field_tag :search_text, params[:search_text] %>
+    </div>
+    <div class="form-control">
+      Social networks: <%= select_tag :social_networks, options_for_select(SocialPost.social_networks, params[:social_networks]), multiple: true %>
+    </div>
+    <div class="form-control">
+      Date from: <%= text_field_tag :date_from, params[:date_from], type: 'date', class: 'datepicker' %>
+    </div>
+    <div class="form-control">
+      Date to: <%= text_field_tag :date_to, params[:date_to], type: 'date', class: 'datepicker' %>
+    </div>
+    <div class="form-control">
+      <%= submit_tag 'Search' %>
+    </div>
+  <% end -%>
+
+  <%= link_to 'Create new post', new_post_path %>
+</div>
+
+<% feed_items.each do |feed_item| %>
+  <div class="feed-item">
+    <div>title: <%= feed_item.title %></div>
+    <div>post: <%= feed_item.post %></div>
+    <label>Social Activities:</label>
+    <% feed_item.social_posts.each do |post| %>
+      <div class="social-post">
+        <div>social_network: <%= post.social_network %></div>
+        <div>schedule_time: <%= post.schedule_time.strftime("%-m/%-d/%y: %H:%M") %></div>
+      </div>
+    <% end %>
+    <%= form_with url: "posts/#{feed_item.id}", method: :delete do |f| %>
+      <%= f.submit "Remove post" %>
+    <% end %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('select').select2();
+  });
+</script>
